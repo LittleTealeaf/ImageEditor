@@ -1,10 +1,13 @@
 package edu.quinnipiac.imageeditor
 
+import android.graphics.ImageDecoder
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.findNavController
 import edu.quinnipiac.imageeditor.databinding.FragmentHomeBinding
 
@@ -25,8 +28,17 @@ class homeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState:Bundle?){
         super.onViewCreated(view, savedInstanceState)
+
+        val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if(uri != null) {
+                val source = ImageDecoder.createSource(requireActivity().contentResolver, uri)
+                val bitmap = ImageDecoder.decodeBitmap(source)
+                val action = homeFragmentDirections.actionHomeFragmentToEditFragment(bitmap)
+                view.findNavController().navigate(action)
+            }
+        }
         binding.uploadImage.setOnClickListener {
-            it.findNavController().navigate(R.id.action_homeFragment_to_editFragment)
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
 

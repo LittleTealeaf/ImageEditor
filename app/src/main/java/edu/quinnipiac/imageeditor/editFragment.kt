@@ -1,10 +1,12 @@
 package edu.quinnipiac.imageeditor
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import edu.quinnipiac.imageeditor.databinding.FragmentEditBinding
 import androidx.navigation.findNavController
 
@@ -23,6 +25,13 @@ class editFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState:Bundle?){
         super.onViewCreated(view, savedInstanceState)
+        val view = view.findViewById<ImageView>(R.id.imageView2)
+
+        val bitmap = arguments?.getParcelable<Bitmap>("image_bitmap")!!
+
+        view.setImageBitmap(bitmap)
+
+
         binding.back.setOnClickListener {
             it.findNavController().navigate(R.id.action_editFragment_to_homeFragment)
         }
