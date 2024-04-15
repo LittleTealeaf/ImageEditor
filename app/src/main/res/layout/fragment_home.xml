@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#add8e6"
     tools:context=".homeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+<Button
+android:id="@+id/uploadImage"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentEnd="true"
+android:layout_alignParentBottom="true"
+android:layout_marginEnd="128dp"
+android:layout_marginBottom="81dp"
+android:text="Upload Image" />
 
-</FrameLayout>
+<TextView
+android:id="@+id/Title"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_above="@+id/uploadImage"
+android:layout_alignParentEnd="true"
+android:layout_marginEnd="157dp"
+android:layout_marginBottom="556dp"
+android:text="Image Editor"
+android:textSize="24sp"
+    android:textColor="@color/black"/>
+
+    </RelativeLayout>
