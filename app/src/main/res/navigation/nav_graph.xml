@@ -18,5 +18,12 @@
         android:id="@+id/editFragment"
         android:name="edu.quinnipiac.imageeditor.editFragment"
         android:label="fragment_edit"
-        tools:layout="@layout/fragment_edit" />
+        tools:layout="@layout/fragment_edit" >
+        <action
+            android:id="@+id/action_editFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="image_bitmap"
+            app:argType="android.graphics.Bitmap" />
+    </fragment>
 </navigation>
