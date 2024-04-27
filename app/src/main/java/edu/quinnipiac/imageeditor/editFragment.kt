@@ -16,6 +16,7 @@ import android.widget.Switch
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.slider.Slider
+import com.google.android.material.switchmaterial.SwitchMaterial
 import edu.quinnipiac.imageeditor.databinding.FragmentEditBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ class editFragment : Fragment() {
     private lateinit var blur_slider: Slider;
     private lateinit var bitmap: Bitmap;
     private lateinit var apply_button: Button;
-    private lateinit var invert_switch: Switch
+    private lateinit var invert_switch: SwitchMaterial
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

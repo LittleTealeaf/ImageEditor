@@ -38,13 +38,16 @@
             android:stepSize="1"
             />
     </LinearLayout>
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/edit_invert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Invert"
+        android:text="Invert "
         />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp" />
     <Button
         android:id="@+id/edit_apply"
         android:layout_width="match_parent"
