@@ -2,6 +2,7 @@ package edu.quinnipiac.imageeditor
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.util.Log
 
 class ImgBlurUtil {
     companion object {
@@ -82,7 +83,7 @@ class ImgBlurUtil {
             // Iterate through each pixel and copy it to the flippedBitmap with adjusted x-coordinate
             for (y in 0 until height) {
                 for (x in 0 until width) {
-                    val newX = if (x < midX) midX + (midX - x) else midX - (x - midX)
+                    val newX = (if (x < midX) midX + (midX - x) else midX - (x - midX)) -1
                     val color = bitmap.getPixel(x, y)
                     flippedBitmap.setPixel(newX, y, color)
                 }
@@ -103,7 +104,7 @@ class ImgBlurUtil {
             // Iterate through each pixel and copy it to the flippedBitmap with adjusted y-coordinate
             for (x in 0 until width) {
                 for (y in 0 until height) {
-                    val newY = if (y < midY) midY + (midY - y) else midY - (y - midY)
+                    val newY = (if (y < midY) midY + (midY - y) else midY - (y - midY)) - 1
                     val color = bitmap.getPixel(x, y)
                     flippedBitmap.setPixel(x, newY, color)
                 }

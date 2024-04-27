@@ -33,6 +33,8 @@ class editFragment : Fragment() {
     private lateinit var bitmap: Bitmap;
     private lateinit var apply_button: Button;
     private lateinit var invert_switch: SwitchMaterial
+    private lateinit var flip_x: SwitchMaterial
+    private lateinit var flip_y: SwitchMaterial
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +50,8 @@ class editFragment : Fragment() {
         imageView = view.findViewById<ImageView>(R.id.imageView2)
         blur_slider=  view.findViewById(R.id.edit_blur_slider)
         invert_switch = view.findViewById(R.id.edit_invert)
+        flip_x = view.findViewById(R.id.edit_flip_x)
+        flip_y = view.findViewById(R.id.edit_flip_y)
 
 
         apply_button = view.findViewById<Button>(R.id.edit_apply)
@@ -100,16 +104,31 @@ class editFragment : Fragment() {
 
 
     suspend fun apply_filters(): Bitmap {
-        var bm = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        val invert = invert_switch.isChecked
         val blur_scale = blur_slider.value.roundToInt()
+        val fx = flip_x.isChecked
+        val fy = flip_y.isChecked
+
+        var bm = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+
         if (blur_scale > 0) {
             Log.v("Filters", "Blurring")
             bm = ImgBlurUtil.applyBoxBlur(bm, blur_scale)
         }
-        if(invert_switch.isChecked) {
+        if(invert) {
             Log.v("Filters", "Inverting")
             bm = ImgBlurUtil.invert(bm)
         }
+
+
+        if(fx) {
+            bm = ImgBlurUtil.flipBitmapOverYAxis(bm)
+        }
+
+        if(fy) {
+            bm =ImgBlurUtil.flipBitmapOverXAxis(bm)
+        }
+
         return bm
     }
 
