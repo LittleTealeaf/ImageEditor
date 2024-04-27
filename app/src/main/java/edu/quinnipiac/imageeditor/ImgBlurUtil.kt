@@ -70,6 +70,48 @@ class ImgBlurUtil {
             return invertedBitmap
         }
 
+        fun flipBitmapOverYAxis(bitmap: Bitmap): Bitmap {
+            // Calculate the midpoint of the bitmap
+            val width = bitmap.width
+            val height = bitmap.height
+            val midX = width / 2
+
+            // Create a new Bitmap with the same dimensions as the original
+            val flippedBitmap = Bitmap.createBitmap(width, height, bitmap.config)
+
+            // Iterate through each pixel and copy it to the flippedBitmap with adjusted x-coordinate
+            for (y in 0 until height) {
+                for (x in 0 until width) {
+                    val newX = if (x < midX) midX + (midX - x) else midX - (x - midX)
+                    val color = bitmap.getPixel(x, y)
+                    flippedBitmap.setPixel(newX, y, color)
+                }
+            }
+
+            return flippedBitmap
+        }
+
+        fun flipBitmapOverXAxis(bitmap: Bitmap): Bitmap {
+            // Calculate the midpoint of the bitmap
+            val width = bitmap.width
+            val height = bitmap.height
+            val midY = height / 2
+
+            // Create a new Bitmap with the same dimensions as the original
+            val flippedBitmap = Bitmap.createBitmap(width, height, bitmap.config)
+
+            // Iterate through each pixel and copy it to the flippedBitmap with adjusted y-coordinate
+            for (x in 0 until width) {
+                for (y in 0 until height) {
+                    val newY = if (y < midY) midY + (midY - y) else midY - (y - midY)
+                    val color = bitmap.getPixel(x, y)
+                    flippedBitmap.setPixel(x, newY, color)
+                }
+            }
+
+            return flippedBitmap
+        }
+
 
     }
 }
