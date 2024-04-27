@@ -38,12 +38,40 @@
             android:stepSize="1"
             />
     </LinearLayout>
-    <com.google.android.material.switchmaterial.SwitchMaterial
-        android:id="@+id/edit_invert"
-        android:layout_width="wrap_content"
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Invert "
-        />
+        android:orientation="horizontal"
+        >
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/edit_invert"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Invert "
+            />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/edit_flip_x"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Flip X "
+            />
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/edit_flip_y"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Flip Y "
+            />
+    </LinearLayout>
 
     <Space
         android:layout_width="match_parent"
