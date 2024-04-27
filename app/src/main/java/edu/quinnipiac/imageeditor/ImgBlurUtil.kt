@@ -1,11 +1,7 @@
 package edu.quinnipiac.imageeditor
 
-import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Color
-import java.io.File
-import java.io.FileOutputStream
 
 class ImgBlurUtil {
     companion object {
@@ -46,6 +42,34 @@ class ImgBlurUtil {
 
             return outputImage
         }
+
+        fun invert(bitmap: Bitmap): Bitmap {
+            val width = bitmap.width
+            val height = bitmap.height
+
+            val invertedBitmap = Bitmap.createBitmap(width, height, bitmap.config)
+
+            for (x in 0 until width) {
+                for (y in 0 until height) {
+                    val pixel = bitmap.getPixel(x, y)
+
+                    // Extracting RGB components
+                    val alpha = pixel shr 24 and 0xFF
+                    val red = 255 - (pixel shr 16 and 0xFF)
+                    val green = 255 - (pixel shr 8 and 0xFF)
+                    val blue = 255 - (pixel and 0xFF)
+
+                    // Combining inverted RGB components into a new pixel value
+                    val invertedPixel = (alpha shl 24) or (red shl 16) or (green shl 8) or blue
+
+                    // Setting the inverted pixel in the new bitmap
+                    invertedBitmap.setPixel(x, y, invertedPixel)
+                }
+            }
+
+            return invertedBitmap
+        }
+
 
     }
 }
