@@ -106,7 +106,7 @@ class editFragment : Fragment() {
             Log.v("Filters", "Blurring")
             bm = ImgBlurUtil.applyBoxBlur(bm, blur_scale)
         }
-        if(invert_switch.isActivated) {
+        if(invert_switch.isChecked) {
             Log.v("Filters", "Inverting")
             bm = ImgBlurUtil.invert(bm)
         }
