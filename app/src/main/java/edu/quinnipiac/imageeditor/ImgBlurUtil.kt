@@ -5,7 +5,7 @@ import android.graphics.Color
 
 class ImgBlurUtil {
     companion object {
-        suspend fun applyBoxBlur(image: Bitmap, blurRadius: Int): Bitmap {
+        fun applyBoxBlur(image: Bitmap, blurRadius: Int): Bitmap {
             val width = image.width
             val height = image.height
             val outputImage = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
@@ -43,7 +43,7 @@ class ImgBlurUtil {
             return outputImage
         }
 
-        suspend fun invert(bitmap: Bitmap): Bitmap {
+        fun invert(bitmap: Bitmap): Bitmap {
             val width = bitmap.width
             val height = bitmap.height
 
