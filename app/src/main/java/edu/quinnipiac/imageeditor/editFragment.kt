@@ -1,41 +1,138 @@
 package edu.quinnipiac.imageeditor
 
+import android.R.attr.height
+import android.R.attr.maxHeight
+import android.R.attr.maxWidth
+import android.R.attr.width
 import android.graphics.Bitmap
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.Switch
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import com.google.android.material.slider.Slider
+import com.google.android.material.switchmaterial.SwitchMaterial
 import edu.quinnipiac.imageeditor.databinding.FragmentEditBinding
-import androidx.navigation.findNavController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.math.roundToInt
+
 
 class editFragment : Fragment() {
     private var _binding:FragmentEditBinding? = null
     private val binding get ()= _binding!!
 
+    private lateinit var imageView: ImageView;
+    private lateinit var blur_slider: Slider;
+    private lateinit var bitmap: Bitmap;
+    private lateinit var apply_button: Button;
+    private lateinit var invert_switch: SwitchMaterial
+    private lateinit var flip_x: SwitchMaterial
+    private lateinit var flip_y: SwitchMaterial
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-      _binding = FragmentEditBinding.inflate(inflater, container,false)
+        _binding = FragmentEditBinding.inflate(inflater, container,false)
         val view = binding.root
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState:Bundle?){
         super.onViewCreated(view, savedInstanceState)
-        val view = view.findViewById<ImageView>(R.id.imageView2)
+        imageView = view.findViewById<ImageView>(R.id.imageView2)
+        blur_slider=  view.findViewById(R.id.edit_blur_slider)
+        invert_switch = view.findViewById(R.id.edit_invert)
+        flip_x = view.findViewById(R.id.edit_flip_x)
+        flip_y = view.findViewById(R.id.edit_flip_y)
 
-        val bitmap = arguments?.getParcelable<Bitmap>("image_bitmap")!!
 
-        view.setImageBitmap(bitmap)
+        apply_button = view.findViewById<Button>(R.id.edit_apply)
+        apply_button.setOnClickListener {
+            apply_button.isEnabled = false
 
+            lifecycleScope.launch(Dispatchers.IO) { // Launch coroutine in lifecycle scope
+                Log.v("async", "Start")
+                val resultsBitmap = apply_filters()
+                withContext(Dispatchers.Main) {
+                    imageView.setImageBitmap(resultsBitmap)
+                    apply_button.isEnabled = true // Re-enable button
+                    Log.v("async","End")
+                }
+            }
 
-        binding.back.setOnClickListener {
-            it.findNavController().navigate(R.id.action_editFragment_to_homeFragment)
         }
+
+        var bm = arguments?.getParcelable<Bitmap>("image_bitmap")!!
+        var width = bm.width
+        var height = bm.height
+        val maxWidth = 256
+        val maxHeight = 256
+        if (width > height) {
+            // landscape
+            val ratio = width.toFloat() / maxWidth
+            width = maxWidth
+            height = (height / ratio).toInt()
+        } else if (height > width) {
+            // portrait
+            val ratio = height.toFloat() / maxHeight
+            height = maxHeight
+            width = (width / ratio).toInt()
+        } else {
+            // square
+            height = maxHeight
+            width = maxWidth
+        }
+
+        Log.v("Pictures", "after scaling Width and height are " + width + "--" + height)
+
+        bm = Bitmap.createScaledBitmap(bm, width, height, true)
+
+        bitmap = bm
+
+        imageView.setImageBitmap(bitmap)
     }
+
+
+
+
+    suspend fun apply_filters(): Bitmap {
+        val invert = invert_switch.isChecked
+        val blur_scale = blur_slider.value.roundToInt()
+        val fx = flip_x.isChecked
+        val fy = flip_y.isChecked
+
+        var bm = bitmap.copy(Bitmap.Config.ARGB_8888, true)
+
+        if (blur_scale > 0) {
+            Log.v("Filters", "Blurring")
+            bm = ImgBlurUtil.applyBoxBlur(bm, blur_scale)
+        }
+        if(invert) {
+            Log.v("Filters", "Inverting")
+            bm = ImgBlurUtil.invert(bm)
+        }
+
+
+        if(fx) {
+            bm = ImgBlurUtil.flipBitmapOverYAxis(bm)
+        }
+
+        if(fy) {
+            bm =ImgBlurUtil.flipBitmapOverXAxis(bm)
+        }
+
+        return bm
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
